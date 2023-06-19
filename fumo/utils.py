@@ -39,11 +39,11 @@ def bytes_to_image(image: BytesIO, size: int):
 
 
 # Thanks Phen
-async def get_avatar(user: discord.User):
+async def get_avatar(self, member: discord.abc.User):
     avatar = BytesIO()
-    await user.avatar_url_as(static_format="png").save(avatar, seek_begin=True)
+    display_avatar: discord.Asset = member.display_avatar.replace(size=512, static_format="png")
+    await display_avatar.save(avatar, seek_begin=True)
     return avatar
-
 
 async def generate_image(ctx, task: functools.partial):
     task = ctx.bot.loop.run_in_executor(None, task)
